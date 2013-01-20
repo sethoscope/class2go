@@ -150,7 +150,7 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
     else:
         os.mkdir(jpeg_dir_result)
     # sort key frames by index
-    sorted(cuts, key=lambda x: x[1])     
+    cuts.sort(key=lambda x: x[1])     
 
     # move key frames into a tmp folder, then move back.
     for i in range(len(cuts)):
