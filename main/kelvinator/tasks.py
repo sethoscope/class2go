@@ -73,7 +73,13 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
         cuts = [];
         for i in range(3, len(candidates)-4):
             cur_score = candidates[i][0]
-            if cur_score > threshold and cur_score > candidates[i-1][0] and cur_score > candidates[i-2][0] and cur_score > candidates[i-3][0] and cur_score > candidates[i+1][0] and cur_score > candidates[i+2][0] and cur_score > candidates[i+3][0] :
+            if ( cur_score > threshold and
+                 cur_score > candidates[i-1][0] and
+                 cur_score > candidates[i-2][0] and
+                 cur_score > candidates[i-3][0] and
+                 cur_score > candidates[i+1][0] and
+                 cur_score > candidates[i+2][0] and
+                 cur_score > candidates[i+3][0] ):
                 cuts.append(candidates[i])
         return cuts
 
@@ -105,7 +111,7 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
             difference_matrix[i, j] = computeDiff(jpeg_dir+"/"+image_list[i], jpeg_dir+"/"+image_list[j])
     difference_matrix = difference_matrix + difference_matrix.transpose()
     
-    # callate shot boundary scores for each frames, score = cut(A,B)/associate(A) + cut(A,B)/associate(B) 
+    # calculate shot boundary scores for each frames, score = cut(A,B)/associate(A) + cut(A,B)/associate(B) 
     candidates = []
     for i in range(k, image_num-1-k):
         cutAB = np.sum(difference_matrix[i-k:i, i:i+k])
@@ -130,7 +136,7 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
         cuts.sort(reverse=True)
         cuts = cuts[:max_keyframes];
 
-    # select the 3nd frame after each shot boundary as the key frame.
+    # select the 3rd frame after each shot boundary as the key frame.
     # alternatively, we can also select middle frame between two shot boundaries as the key frame.
     cut_offset = 2
 
